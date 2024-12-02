@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Queue_management_system.Entities;
+using Queue_management_system.Core.Iservice;
 using Queue_management_system.service;
+using Queue_management_system.Service.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,49 +11,76 @@ namespace Queue_management_system.Controllers
     [ApiController]
     public class PatientsController : ControllerBase
     {
-        static PatientsService p = new PatientsService();
+        readonly IPatientsService _patientsService;
+
+        public PatientsController(IPatientsService patientsService)
+        {
+            _patientsService = patientsService;
+        }
 
         // GET: api/<PatientsController>
         [HttpGet]
-        public ActionResult<List<Patients>> Get()
+        public ActionResult<IEnumerable<PatientsEntity>> Get()
         {
-            List<Patients> result = new List<Patients>();
+            IEnumerable<PatientsEntity> result = _patientsService.GetPatientsList();
+            if (result == null)
+                return NotFound();
+            return Ok(result);
 
+
+        }
+
+        // GET api/<EmployeesController>/5
+        [HttpGet("{id}")]
+
+        public ActionResult<PatientsEntity> Getbyid(int id)
+        {
+            if (id < 0)
+                return BadRequest();
+            PatientsEntity result = _patientsService.GetById(id);
+            if (result == null)
+                return NotFound();
             return result;
         }
 
-        // GET api/<PatientsController>/5
-        [HttpGet("{id}")]
-        //public ActionResult<Patients> Getbyid(string tz)
-        //{
-        //    if (tz == null)
-        //        return BadRequest();
-        //    Patients res = p.GetPatientById(tz);
-        //    if (res == null)
-        //        return NotFound();
-        //    return res;
-        //}
-
-        // POST api/<PatientsController>
+        // POST api/<EmployeesController>
         [HttpPost]
-        public ActionResult<bool> Post([FromBody] Patients value)
+        public ActionResult<bool> Post([FromBody] PatientsEntity value)
         {
-            return p.AddPatientsList(value);
-
+            var result = _patientsService.PostPatient(value);
+            if (!result) return BadRequest();
+            return result;
         }
 
-        // PUT api/<PatientsController>/5
+        // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put(string patientTZ, [FromBody] Patients value)
+        public ActionResult<bool> Put(int id, [FromBody] PatientsEntity value)
         {
-            return p.UpdatePatientsList(value, patientTZ);
+            if (value == null || id < 0)
+                return BadRequest();
+            bool f = _patientsService.PutPatient(id, value);
+            if (!f)
+                return NotFound();
+            return f;
+
         }
 
-        // DELETE api/<PatientsController>/5
+        // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(string patientTZ)
+        public ActionResult<bool> Delete(int id)
         {
-            return p.DeletePatientsList(patientTZ);
+            if (id < 0)
+                return BadRequest();
+
+            bool result = _patientsService.DeletePatient(id);
+            if (!result)
+                return NotFound();
+            return result;
+
         }
+
+
+
+
     }
 }

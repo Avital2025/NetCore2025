@@ -2,6 +2,7 @@
 using Queue_management_system.Core.Iservice;
 using Queue_management_system.service;
 using Queue_management_system.Service.Entities;
+using System.Diagnostics.Metrics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,9 +22,12 @@ namespace Queue_management_system.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<EmployeesEntity>> Get()
         {
-            List<EmployeesEntity> result = new List<EmployeesEntity>();
+            IEnumerable<EmployeesEntity> result = _employeesService.GetEmployeesList();
+            if (result == null)
+                return NotFound();
+            return Ok(result);
 
-            return result;
+   
         }
 
         // GET api/<EmployeesController>/5
@@ -33,7 +37,7 @@ namespace Queue_management_system.Controllers
         {
             if (id < 0)
                 return BadRequest();
-            EmployeesEntity res = _employeesService.GetEmployeeById(id);
+            EmployeesEntity res = _employeesService.GetById(id);
             if (res == null)
                 return NotFound();
             return res;
@@ -43,15 +47,21 @@ namespace Queue_management_system.Controllers
         [HttpPost]
         public ActionResult<bool> Post([FromBody] EmployeesEntity value)
         {
-            return e.AddEmployeesList(value);
-
+            var result = _employeesService.PostEmployee(value);
+            if (!result) return BadRequest();
+            return result;
         }
 
         // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
         public ActionResult<bool> Put(int id, [FromBody] EmployeesEntity value)
         {
-            return e.UpdateEmployeesList(value, id);
+            if (value == null || id < 0)
+                return BadRequest();
+            bool f = _employeesService.PutEmployee(id, value);
+            if (!f)
+                return NotFound();
+            return f;
 
         }
 
@@ -59,7 +69,13 @@ namespace Queue_management_system.Controllers
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {
-            return e.DeleteEmployeesList(id);
+            if (id < 0)
+                return BadRequest();
+
+            bool result = _employeesService.DeleteEmployee(id);
+            if (!result)
+                return NotFound();
+            return result;
 
         }
     }

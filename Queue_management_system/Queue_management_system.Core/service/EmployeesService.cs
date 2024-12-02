@@ -7,21 +7,37 @@ namespace Queue_management_system.service
     public class EmployeesService: IEmployeesService
     {
 
-        readonly IEmployeesRepository _employeesRepository;
-        public EmployeesService( IEmployeesRepository employeesRepository)
+        readonly IGenericRepository<EmployeesEntity> _employeesRepository;
+        public EmployeesService(IGenericRepository<EmployeesEntity> employeesRepository)
         {
             _employeesRepository= employeesRepository;
         }
-
-
+        public EmployeesEntity GetById(int id)
+        {
+            return _employeesRepository.GetById(id);
+        }
         public IEnumerable<EmployeesEntity> GetEmployeesList()
         {
             return _employeesRepository.GetAllData();
         }
 
-        List<EmployeesEntity> IEmployeesService.GetEmployeesList()
+        public bool DeleteEmployee(int id)
         {
-            throw new NotImplementedException();
+
+            return _employeesRepository.DeleteData(id);
+        }       
+
+        public bool PostEmployee(EmployeesEntity employee)
+        {
+            return _employeesRepository.AddData(employee);
         }
+
+
+        public bool PutEmployee(int id, EmployeesEntity employee)
+        {
+            return _employeesRepository.UpdateData(id, employee);
+        }
+
+    
     }
 }

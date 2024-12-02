@@ -1,0 +1,40 @@
+[
+  {
+    "Name": "John Doe",
+    "TZ": "123456789",
+    "Phone": "050-1234567",
+    "Mail": "john.doe@example.com",
+    "Type": "doctor",
+    "EemployeeId": 1
+
+  },
+  {
+    "Name": "Michele Smith",
+    "TZ": "987654321",
+    "Phone": "052-7654321",
+    "Mail": "michele.smith@example.com",
+    "Type": "doctor",
+    "EemployeeId": 2
+
+  },
+  {
+    "Name": "David Brown",
+    "TZ": "111223344",
+    "Phone": "053-1239876",
+    "Mail": "david.brown@example.com",
+    "Type": "secretary",
+    "EemployeeId": 3
+
+  },
+  {
+    "Name": "Avi Green",
+    "TZ": "333445566",
+    "Phone": "055-6789123",
+    "Mail": "avi.green@example.com",
+    "Type": "secretary",
+    "EemployeeId": 4
+
+  }
+]
+
+

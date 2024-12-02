@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Queue_management_system.Core.Iservice;
 using Queue_management_system.Entities;
 using Queue_management_system.service;
+using Queue_management_system.Service.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,50 +13,72 @@ namespace Queue_management_system.Controllers
     public class QueuesController : ControllerBase
     {
 
-        static QueuesService q = new QueuesService();
+        readonly IQueuesService _queuesService;
 
-        // GET: api/<QueuesController>
-        [HttpGet]
-        public ActionResult<List<Queues>> Get()
+        public QueuesController(IQueuesService queuesService)
         {
-            List<Queues> result = new List<Queues>();
-            return result;
+            _queuesService = queuesService;
         }
 
-        // GET api/<QueuesController>/5
+        // GET: api/<PatientsController>
+        [HttpGet]
+        public ActionResult<IEnumerable<QueuesEntity>> Get()
+        {
+            IEnumerable<QueuesEntity> result = _queuesService.GetQueuesList();
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+
+
+        }
+
+        // GET api/<EmployeesController>/5
         [HttpGet("{id}")]
-        public ActionResult<Queues> GetQueuebyid(int id)
+
+        public ActionResult<QueuesEntity> Getbyid(int id)
         {
             if (id < 0)
                 return BadRequest();
-            Employees res = q.GetQueueById(id);
-            if (res == null)
+            QueuesEntity result = _queuesService.GetById(id);
+            if (result == null)
                 return NotFound();
-            return res;
+            return result;
         }
 
-        // POST api/<QueuesController>
+        // POST api/<EmployeesController>
         [HttpPost]
-        public ActionResult<bool> Post([FromBody] Queues value)
+        public ActionResult<bool> Post([FromBody] QueuesEntity value)
         {
-            return q.AddQueuesList(value);
+            var result = _queuesService.PostQueue(value);
+            if (!result) return BadRequest();
+            return result;
         }
 
-
-
-        // PUT api/<QueuesController>/5
+        // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put(int queueid, [FromBody] Queues value)
+        public ActionResult<bool> Put(int id, [FromBody] QueuesEntity value)
         {
-            return q.UpdateQueuesList(value, queueid);
+            if (value == null || id < 0)
+                return BadRequest();
+            bool f = _queuesService.PutQueue(id, value);
+            if (!f)
+                return NotFound();
+            return f;
+
         }
 
-
-        // DELETE api/<QueuesController>/5
+        // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
         public ActionResult<bool> Delete(int id)
         {
-            return q.DeleteQueuesList(id);
+            if (id < 0)
+                return BadRequest();
+
+            bool result = _queuesService.DeleteQueue(id);
+            if (!result)
+                return NotFound();
+            return result;
+
         }
 
 

@@ -2,38 +2,46 @@
 using Queue_management_system.Service.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Queue_management_system.Data.Repository
 {
-    public class EmployeesRepository: IEmployeesRepository
+    public class EmployeesRepository: IGenericRepository<EmployeesEntity>
     {
-        readonly DataContext _datacontext;
-        public EmployeesRepository()
-        {
+        readonly DataContext _dataContext;
 
-        }
+
         public EmployeesRepository(DataContext datacontext)
         {
-            _datacontext = datacontext;
+            _dataContext = datacontext;
         }
-        // לממש 5 פוקנציות, יש לי משתנה רידאונלי, דרכו אני פונה לדא קונטקסט
-        public List<EmployeesEntity> GetAllData()
+
+
+        public IEnumerable<EmployeesEntity> GetAllData()
         {
-            return _datacontext.employeesList;
-        }
-        public EmployeesEntity GetById(int id)
-        {
+            return _dataContext.employeesList;
 
         }
-        public bool AddEmployee(EmployeesEntity employee)
+
+
+        public EmployeesEntity GetById(int id)
+        {
+            var data = _dataContext.employeesList;
+            if (data == null)
+                return null;
+            return data.Where(c => c.EemployeeId == id).FirstOrDefault();
+        }
+
+
+        public bool AddData(EmployeesEntity employee)
         {
             try
             {
-                _datacontext.employeesList.Add(employee);
-                _datacontext.SaveChange();
+                _dataContext.employeesList.Add(employee);
+                _dataContext.SaveChange();
                 return true;
             }
             catch (Exception ex)
@@ -42,18 +50,34 @@ namespace Queue_management_system.Data.Repository
             }
         }
         
-        public bool DeleteEmployee(int id)
+        public bool DeleteData(int id)
         {
-
+            var data = _dataContext.employeesList;
+            if (data == null) return false;
+            int index = data.FindIndex(x => x.EemployeeId == id);
+            if (index != -1)
+            {
+                data.Remove(data.Find(x => x.EemployeeId == id));
+                _dataContext.SaveChange();
+                return true;
+            }
+            return false;
         }
-        public bool UpdateEmpliyee(int id)
+        public bool UpdateData(int id, EmployeesEntity employee)
         {
-
+            var data = _dataContext.employeesList;
+            if (data == null) return false;
+            int index = data.FindIndex(x => x.EemployeeId == id);
+            if (index != -1)
+            {
+                data.RemoveAt(index);
+                data.Insert(index, employee);
+                _dataContext.SaveChange();
+                return true;
+            }
+            return false;
         }
 
-        public bool AddEmployeesList(EmployeesEntity employee)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

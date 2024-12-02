@@ -1,54 +1,42 @@
-﻿using Queue_management_system.Entities;
+﻿using Queue_management_system.Core.IRepository;
 
 namespace Queue_management_system.service
 {
     public class RoomsService
     {
-        public List<Rooms> GetRoomsList()
+
+        readonly IGenericRepository<RoomsService> _roomsRepository;
+        public RoomsService(IGenericRepository<RoomsService> roomsRepository)
         {
-            if (ManagerDataContext.d.roomsList == null)
-            {
-                return null;
-            }
-            return ManagerDataContext.d.roomsList;
+            _roomsRepository = roomsRepository;
         }
-        public bool AddRoomsList(Rooms rooms)
+        public RoomsService GetById(int id)
         {
-            if (ManagerDataContext.d.roomsList == null)
-            {
-                return false;
-            }
-            ManagerDataContext.d.roomsList.Add(rooms);
-            return true;
+            return _roomsRepository.GetById(id);
+        }
+        public IEnumerable<RoomsService> GetQueuesList()
+        {
+            return _roomsRepository.GetAllData();
         }
 
-        public bool UpdateRoomsList(Rooms room, int roomid)
-        {
-            if (ManagerDataContext.d.roomsList == null)
-            {
-                return false;
-            }
-
-            Rooms r = ManagerDataContext.d.roomsList.Find(r => r.RoomId == roomid);
-            r.RoomName = room.RoomName;
-            r.DoctorName = room.DoctorName;
-            r.Window = room.Window;
-            r.RoomLevel = room.RoomLevel;
-            return true;
-            /*RoomName DoctorName Window RoomLevel  */
-        }
-
-        public bool DeleteRoomsList(int roomId)
+        public bool DeleteQueue(int id)
         {
 
-            if (ManagerDataContext.d.roomsList == null)
-            {
-                return false;
-            }
-
-            ManagerDataContext.d.roomsList.Remove(ManagerDataContext.d.roomsList.Find(r => r.RoomId == roomId));
-            return true;
+            return _roomsRepository.DeleteData(id);
         }
+
+        public bool PostQueue(RoomsService employee)
+        {
+            return _roomsRepository.AddData(employee);
+        }
+
+
+        public bool PutEmployee(int id, RoomsService employee)
+        {
+            return _roomsRepository.UpdateData(id, employee);
+        }
+
+
 
     }
 }

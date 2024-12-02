@@ -16,7 +16,7 @@ namespace Queue_management_system
         public List<PatientsEntity> patientsList { get; set; }
         public List<QueuesEntity> queuesList { get; set; }
         public List<RoomsEntity> roomsList { get; set; }
-
+        /*
         public DataContext()
         {
             string path = Path.Combine(AppContext.BaseDirectory, "Data", "courier.json");
@@ -26,11 +26,11 @@ namespace Queue_management_system
         public bool SaveData(List<EmployeesEntitys> data)
         {
             return true;
-        }
+        }*/
         public void SaveChange()
         {
 
         }
-
+        
     }
 }

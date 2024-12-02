@@ -1,60 +1,40 @@
-﻿using Queue_management_system.Entities;
+﻿using Queue_management_system.Core.IRepository;
+
 
 namespace Queue_management_system.service
 {
     public class QueuesService
     {
-        public List<Queues> GetQueuesList()
+
+        readonly IGenericRepository<QueuesService> _queuesRepository;
+        public QueuesService(IGenericRepository<QueuesService> queuesRepository)
         {
-            if (ManagerDataContext.d.queuesList == null)
-            {
-                return null;
-            }
-            return ManagerDataContext.d.queuesList;
+            _queuesRepository = queuesRepository;
         }
-        public bool AddQueuesList(Queues queue)
+        public QueuesService GetById(int id)
         {
-            if (ManagerDataContext.d.queuesList == null)
-            {
-                return false;
-            }
-            ManagerDataContext.d.queuesList.Add(queue);
-            return true;
+            return _queuesRepository.GetById(id);
+        }
+        public IEnumerable<QueuesService> GetQueuesList()
+        {
+            return _queuesRepository.GetAllData();
         }
 
-        public bool UpdateQueuesList(Queues queue, int queueId)
+        public bool DeleteQueue(int id)
         {
-            if (ManagerDataContext.d.queuesList == null)
-            {
-                return false;
-            }
 
-            Queues q = ManagerDataContext.d.queuesList.Find(q => q.QueueId == queueId);
-            q.Name = patient.Name;
-            q.Phone = patient.Phone;
-            q.Mail = patient.Mail;
-            q.AnotherPhone = patient.AnotherPhone;
-            q.Age = patient.Age;
-            q.Insurance = patient.Insurance;
-
-
-
-            return true;
-            /*   Name  Age  AnotherPhone  Insurance */
-
-
+            return _queuesRepository.DeleteData(id);
         }
 
-        public bool DeleteQueuesList(int queueId)
+        public bool PostQueue(QueuesService employee)
         {
+            return _queuesRepository.AddData(employee);
+        }
 
-            if (ManagerDataContext.d.queuesList == null)
-            {
-                return false;
-            }
 
-            ManagerDataContext.d.queuesList.Remove(ManagerDataContext.d.queuesList.Find(q => q.QueueId == queueId));
-            return true;
+        public bool PutEmployee(int id, QueuesService employee)
+        {
+            return _queuesRepository.UpdateData(id, employee);
         }
 
 

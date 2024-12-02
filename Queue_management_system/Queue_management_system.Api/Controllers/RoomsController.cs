@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Queue_management_system.Core.Iservice;
 using Queue_management_system.Entities;
 using Queue_management_system.service;
+using Queue_management_system.Service.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,43 +12,72 @@ namespace Queue_management_system.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-        static RoomsService r = new RoomsService();
-        // GET: api/<RoomsController>
-        [HttpGet]
-        public ActionResult<List<Rooms>> Get()
+        readonly IRoomsService _roomsService;
+
+        public RoomsController(IRoomsService roomsService)
         {
-            List<Rooms> result = new List<Rooms>();
+            _roomsService = roomsService;
+        }
+
+        // GET: api/<PatientsController>
+        [HttpGet]
+        public ActionResult<IEnumerable<RoomsEntity>> Get()
+        {
+            IEnumerable<RoomsEntity> result = _roomsService.GetRoomsList();
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+
+
+        }
+
+        // GET api/<EmployeesController>/5
+        [HttpGet("{id}")]
+
+        public ActionResult<RoomsEntity> Getbyid(int id)
+        {
+            if (id < 0)
+                return BadRequest();
+            RoomsEntity result = _roomsService.GetById(id);
+            if (result == null)
+                return NotFound();
             return result;
         }
 
-        // GET api/<RoomsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<RoomsController>
+        // POST api/<EmployeesController>
         [HttpPost]
-        public ActionResult<bool> Post([FromBody] Rooms value)
+        public ActionResult<bool> Post([FromBody] RoomsEntity value)
         {
-            return r.AddRoomsList(value);
+            var result = _roomsService.PostRoom(value);
+            if (!result) return BadRequest();
+            return result;
         }
 
-
-        // PUT api/<RoomsController>/5
+        // PUT api/<EmployeesController>/5
         [HttpPut("{id}")]
-        public ActionResult<bool> Put(int roomid, [FromBody] Rooms value)
+        public ActionResult<bool> Put(int id, [FromBody] RoomsEntity value)
         {
-            return r.UpdateRoomsList(value, roomid);
+            if (value == null || id < 0)
+                return BadRequest();
+            bool f = _roomsService.PutRoom(id, value);
+            if (!f)
+                return NotFound();
+            return f;
+
         }
 
-
-        // DELETE api/<RoomsController>/5
+        // DELETE api/<EmployeesController>/5
         [HttpDelete("{id}")]
-        public ActionResult<bool> Delete(int roomid)
+        public ActionResult<bool> Delete(int id)
         {
-            return r.DeleteRoomsList(roomid);
+            if (id < 0)
+                return BadRequest();
+
+            bool result = _roomsService.DeleteRoom(id);
+            if (!result)
+                return NotFound();
+            return result;
+
         }
 
 

@@ -1,66 +1,42 @@
-﻿using Queue_management_system.Entities;
+﻿using Queue_management_system.Core.IRepository;
+using Queue_management_system.Core.Iservice;
+using Queue_management_system.Entities;
+using Queue_management_system.Service.Entities;
 
 namespace Queue_management_system.service
 {
-    public class PatientsService
+    public class PatientsService: IPatientsService
     {
-    
-        public List<Patients> GetPatientsList()
+        readonly IGenericRepository<PatientsService> _patientsRepository;
+        public PatientsService(IGenericRepository<PatientsService> patientsRepository)
         {
-            if (ManagerDataContext.d.patientsList == null)
-            {
-                return null;
-            }
-            return ManagerDataContext.d.patientsList;
+            _patientsRepository = patientsRepository;
         }
-        //public Patients GetPatientById(string tz) {
-
-        //    if (ManagerDataContext.d.patientsList == null)
-        //        ManagerDataContext.d.patientsList = new List<Patients>();
-        //    Patients p = ManagerDataContext.d.patientsList.FirstOrDefault(p => p.patientTZ == tz);
-        //    return p;
-        //}
-
-        public bool AddPatientsList(Patients patient)
+        public PatientsService GetById(int id)
         {
-            if (ManagerDataContext.d.patientsList == null)
-            {
-                return false;
-            }
-            ManagerDataContext.d.patientsList.Add(patient);
-            return true;
+            return _patientsRepository.GetById(id);
+        }
+        public IEnumerable<PatientsService> GetPatientsList()
+        {
+            return _patientsRepository.GetAllData();
         }
 
-        public bool UpdatePatientsList(Patients patient, string patientTZ)
-        {
-            if (ManagerDataContext.d.patientsList == null)
-            {
-                return false;
-            }
-
-            Patients p = ManagerDataContext.d.patientsList.Find(p => p.patientTZ == patientTZ);
-            p.Name = patient.Name;
-            p.Phone = patient.Phone;
-            p.Mail = patient.Mail;
-            p.AnotherPhone = patient.AnotherPhone;
-            p.Age = patient.Age;
-            p.Insurance = patient.Insurance;
-
-            return true;
-            /*   Name  Age  AnotherPhone  Insurance */
-
-
-        }
-        public bool DeletePatientsList(string patientTZ)
+        public bool DeletePatient(int id)
         {
 
-            if (ManagerDataContext.d.patientsList == null)
-            {
-                return false;
-            }
-
-            ManagerDataContext.d.patientsList.Remove(ManagerDataContext.d.patientsList.Find(c => c.patientTZ == patientTZ));
-            return true;
+            return _patientsRepository.DeleteData(id);
         }
+
+        public bool PostPatient(PatientsService employee)
+        {
+            return _patientsRepository.AddData(employee);
+        }
+
+
+        public bool PutPatient(int id, PatientsService employee)
+        {
+            return _patientsRepository.UpdateData(id, employee);
+        }
+
     }
 }
