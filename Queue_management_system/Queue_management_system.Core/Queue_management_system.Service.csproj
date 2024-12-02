@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Queue_management_system.Service\Queue_management_system.Core.csproj" />
+  </ItemGroup>
+
 </Project>

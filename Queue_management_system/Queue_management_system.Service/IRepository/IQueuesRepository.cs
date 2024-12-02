@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Queue_management_system.Core
+namespace Queue_management_system.Core.IRepository
 {
-    internal class Class1
+    internal interface IQueuesRepository
     {
     }
 }

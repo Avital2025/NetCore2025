@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Queue_management_system.Core.IRepository
 {
-    public class IQueue_management_systemRepository
+    internal interface IRoomsRepository
     {
-
     }
 }
