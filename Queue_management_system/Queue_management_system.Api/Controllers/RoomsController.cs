@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Queue_management_system.Core.Iservice;
-using Queue_management_system.Entities;
 using Queue_management_system.service;
 using Queue_management_system.Service.Entities;
 

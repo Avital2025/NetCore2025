@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Queue_management_system.Core.Iservice;
-using Queue_management_system.Entities;
-using Queue_management_system.service;
 using Queue_management_system.Service.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

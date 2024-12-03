@@ -1,21 +1,22 @@
 ﻿using Queue_management_system.Core.IRepository;
-
+using Queue_management_system.Core.Iservice;
+using Queue_management_system.Service.Entities;
 
 namespace Queue_management_system.service
 {
-    public class QueuesService
+    public class QueuesService:IQueuesService
     {
 
-        readonly IGenericRepository<QueuesService> _queuesRepository;
-        public QueuesService(IGenericRepository<QueuesService> queuesRepository)
+        readonly IGenericRepository<QueuesEntity> _queuesRepository;
+        public QueuesService(IGenericRepository<QueuesEntity> queuesRepository)
         {
             _queuesRepository = queuesRepository;
         }
-        public QueuesService GetById(int id)
+        public QueuesEntity GetById(int id)
         {
             return _queuesRepository.GetById(id);
         }
-        public IEnumerable<QueuesService> GetQueuesList()
+        public IEnumerable<QueuesEntity> GetQueuesList()
         {
             return _queuesRepository.GetAllData();
         }
@@ -26,18 +27,17 @@ namespace Queue_management_system.service
             return _queuesRepository.DeleteData(id);
         }
 
-        public bool PostQueue(QueuesService employee)
+        public bool PostQueue(QueuesEntity queue)
         {
-            return _queuesRepository.AddData(employee);
+            return _queuesRepository.AddData(queue);
         }
 
 
-        public bool PutEmployee(int id, QueuesService employee)
+        public bool PutQueue(int id, QueuesEntity queue)
         {
-            return _queuesRepository.UpdateData(id, employee);
+            return _queuesRepository.UpdateData(id, queue);
         }
 
-
-
+     
     }
 }

@@ -1,39 +1,41 @@
 ﻿using Queue_management_system.Core.IRepository;
+using Queue_management_system.Core.Iservice;
+using Queue_management_system.Service.Entities;
 
 namespace Queue_management_system.service
 {
-    public class RoomsService
+    public class RoomsService:IRoomsService
     {
 
-        readonly IGenericRepository<RoomsService> _roomsRepository;
-        public RoomsService(IGenericRepository<RoomsService> roomsRepository)
+        readonly IGenericRepository<RoomsEntity> _roomsRepository;
+        public RoomsService(IGenericRepository<RoomsEntity> roomsRepository)
         {
             _roomsRepository = roomsRepository;
         }
-        public RoomsService GetById(int id)
+        public RoomsEntity GetById(int id)
         {
             return _roomsRepository.GetById(id);
         }
-        public IEnumerable<RoomsService> GetQueuesList()
+        public IEnumerable<RoomsEntity> GetRoomsList()
         {
             return _roomsRepository.GetAllData();
         }
 
-        public bool DeleteQueue(int id)
+        public bool DeleteRoom(int id)
         {
 
             return _roomsRepository.DeleteData(id);
         }
 
-        public bool PostQueue(RoomsService employee)
+        public bool PostRoom(RoomsEntity room)
         {
-            return _roomsRepository.AddData(employee);
+            return _roomsRepository.AddData(room);
         }
 
 
-        public bool PutEmployee(int id, RoomsService employee)
+        public bool PutRoom(int id, RoomsEntity room)
         {
-            return _roomsRepository.UpdateData(id, employee);
+            return _roomsRepository.UpdateData(id, room);
         }
 
 

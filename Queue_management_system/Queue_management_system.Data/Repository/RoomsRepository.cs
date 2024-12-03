@@ -1,4 +1,5 @@
-﻿using Queue_management_system.Core.Iservice;
+﻿using Queue_management_system.Core.IRepository;
+using Queue_management_system.Core.Iservice;
 using Queue_management_system.Service.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Queue_management_system.Data.Repository
 {
-    public class RoomsRepository:IRoomsService
+    public class RoomsRepository: IGenericRepository<RoomsEntity>
     {
         readonly DataContext _dataContext;
 
@@ -39,7 +40,7 @@ namespace Queue_management_system.Data.Repository
         {
             try
             {
-                _dataContext.queuesList.Add(room);
+                _dataContext.roomsList.Add(room);
                 _dataContext.SaveChange();
                 return true;
             }
