@@ -1,4 +1,5 @@
-﻿using Queue_management_system.Core.IRepository;
+﻿using Microsoft.EntityFrameworkCore;
+using Queue_management_system.Core.IRepository;
 using Queue_management_system.Service.Entities;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace Queue_management_system.Data.Repository
             try
             {
                 _dataContext.employeesList.Add(employee);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -52,32 +53,32 @@ namespace Queue_management_system.Data.Repository
         
         public bool DeleteData(int id)
         {
-            var data = _dataContext.employeesList;
+            var data = _dataContext.employeesList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.EemployeeId == id);
             if (index != -1)
             {
                 data.Remove(data.Find(x => x.EemployeeId == id));
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;
         }
         public bool UpdateData(int id, EmployeesEntity employee)
         {
-            var data = _dataContext.employeesList;
+            var data = _dataContext.employeesList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.EemployeeId == id);
             if (index != -1)
             {
                 data.RemoveAt(index);
                 data.Insert(index, employee);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;
         }
-
+       
         
     }
 }

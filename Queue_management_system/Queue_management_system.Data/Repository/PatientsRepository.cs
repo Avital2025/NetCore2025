@@ -41,7 +41,7 @@ namespace Queue_management_system.Data.Repository
             try
             {
                 _dataContext.patientsList.Add(patient);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -52,27 +52,27 @@ namespace Queue_management_system.Data.Repository
 
         public bool DeleteData(int id)
         {
-            var data = _dataContext.patientsList;
+            var data = _dataContext.patientsList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.patientTZ == id);
             if (index != -1)
             {
                 data.Remove(data.Find(x => x.patientTZ == id));
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;
         }
         public bool UpdateData(int id, PatientsEntity patient)
         {
-            var data = _dataContext.patientsList;
+            var data = _dataContext.patientsList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.patientTZ == id);
             if (index != -1)
             {
                 data.RemoveAt(index);
                 data.Insert(index, patient);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;

@@ -41,7 +41,7 @@ namespace Queue_management_system.Data.Repository
             try
             {
                 _dataContext.queuesList.Add(queue);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -52,27 +52,27 @@ namespace Queue_management_system.Data.Repository
 
         public bool DeleteData(int id)
         {
-            var data = _dataContext.queuesList;
+            var data = _dataContext.queuesList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.QueueId == id);
             if (index != -1)
             {
                 data.Remove(data.Find(x => x.QueueId == id));
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;
         }
         public bool UpdateData(int id, QueuesEntity queue)
         {
-            var data = _dataContext.queuesList;
+            var data = _dataContext.queuesList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.QueueId == id);
             if (index != -1)
             {
                 data.RemoveAt(index);
                 data.Insert(index, queue);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;

@@ -1,4 +1,5 @@
-﻿using Queue_management_system.Service.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Queue_management_system.Service.Entities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,28 +10,20 @@ using System.Threading.Tasks;
 
 namespace Queue_management_system
 {
-    public class DataContext
+    public class DataContext:DbContext 
     {
       
-        public List<EmployeesEntity> employeesList { get; set; }
-        public List<PatientsEntity> patientsList { get; set; }
-        public List<QueuesEntity> queuesList { get; set; }
-        public List<RoomsEntity> roomsList { get; set; }
-        /*
-        public DataContext()
-        {
-            string path = Path.Combine(AppContext.BaseDirectory, "Data", "courier.json");
-            string jsonString = File.ReadAllText(path);
-            employeesList = JsonSerializer.Deserialize<List<EmployeesEntity>>(jsonString);// typeof(Employees) ;
-        }
-        public bool SaveData(List<EmployeesEntitys> data)
-        {
-            return true;
-        }*/
-        public void SaveChange()
+        public DbSet<EmployeesEntity> employeesList { get; set; }
+        public DbSet<PatientsEntity> patientsList { get; set; }
+        public DbSet<QueuesEntity> queuesList { get; set; }
+        public DbSet<RoomsEntity> roomsList { get; set; }
+
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
         }
+
+
         
     }
 }

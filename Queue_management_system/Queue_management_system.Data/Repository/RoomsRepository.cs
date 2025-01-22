@@ -41,7 +41,7 @@ namespace Queue_management_system.Data.Repository
             try
             {
                 _dataContext.roomsList.Add(room);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -52,27 +52,27 @@ namespace Queue_management_system.Data.Repository
 
         public bool DeleteData(int id)
         {
-            var data = _dataContext.roomsList;
+            var data = _dataContext.roomsList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.RoomId == id);
             if (index != -1)
             {
                 data.Remove(data.Find(x => x.RoomId == id));
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;
         }
         public bool UpdateData(int id, RoomsEntity room)
         {
-            var data = _dataContext.roomsList;
+            var data = _dataContext.roomsList.ToList();
             if (data == null) return false;
             int index = data.FindIndex(x => x.RoomId == id);
             if (index != -1)
             {
                 data.RemoveAt(index);
                 data.Insert(index, room);
-                _dataContext.SaveChange();
+                _dataContext.SaveChanges();
                 return true;
             }
             return false;

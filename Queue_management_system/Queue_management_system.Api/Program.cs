@@ -4,6 +4,7 @@ using Queue_management_system.Data.Repository;
 using Queue_management_system.Service.Entities;
 using Queue_management_system.service;
 using Queue_management_system;
+using Microsoft.EntityFrameworkCore;
 
 internal class Program
 {
@@ -28,7 +29,11 @@ internal class Program
 
 
 
-        builder.Services.AddSingleton<DataContext>();
+        builder.Services.AddDbContext<DataContext>(option =>
+        {
+
+            option.UseSqlServer("Data Source=DESKTOP-SSNMLFD;Initial Catalog=system;Integrated Security=true; ");
+        });
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
